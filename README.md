@@ -1,6 +1,6 @@
 
 ====================================================================
-Java utilities and code snoppets
+Java utilities and code snippets
 ====================================================================
 **Giuseppe Urso - GITHUB**
 
