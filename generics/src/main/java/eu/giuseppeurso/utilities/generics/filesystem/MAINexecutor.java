@@ -33,11 +33,13 @@ public class MAINexecutor {
 		
 		///////// FILEOPERATIONS
 		/////////
+//		String file = "src/test/resources/filesystem/test-03.txt";
+//		String s  = "II";
+//		FileOperations.searchStringInFile(file, s);
+		
+		/////////
 		String file = "src/test/resources/filesystem/test-03.txt";
-		String s  = "II";
-		FileOperations.searchStringInFile(file, s);
-		
-		
+		System.out.println("File as string: "+FileOperations.getFileAsString(file));
 	}
 
 }
