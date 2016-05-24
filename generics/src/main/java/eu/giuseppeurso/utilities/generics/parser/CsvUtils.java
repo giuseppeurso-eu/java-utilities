@@ -28,7 +28,7 @@ import org.apache.commons.io.FileUtils;
  * @author Giuseppe Urso
  *
  */
-public class CSVUtils{
+public class CsvUtils{
 	
 	/**
 	 * Reading the first line of a given csv file.

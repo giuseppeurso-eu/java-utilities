@@ -1,7 +1,7 @@
 package eu.giuseppeurso.utilities.generics.parser;
 
 import java.util.List;
-import eu.giuseppeurso.utilities.generics.parser.CSVUtils;
+import eu.giuseppeurso.utilities.generics.parser.CsvUtils;
 import junit.framework.TestCase;
 
 
@@ -35,7 +35,7 @@ public class CSVUtilsTest extends TestCase {
 	 */
 	public void testGetCSVFirstLine() {
 		boolean assertActual = false;
-		String header = CSVUtils.getCSVFirstLine(testFile1);
+		String header = CsvUtils.getCSVFirstLine(testFile1);
 		
 		if (header!=null && !header.equals("")) {
 			System.out.println("TEST CASE: " + this.getName() + " -> Output: "+header);
@@ -49,7 +49,7 @@ public class CSVUtilsTest extends TestCase {
 	 */
 	public void testGetValuesByColumnName() {
 		boolean assertActual = false;
-		List<String> values= CSVUtils.getValuesByColumnName(testFile1, "ID");
+		List<String> values= CsvUtils.getValuesByColumnName(testFile1, "ID");
 		
 		if (values!=null) {
 			System.out.println("TEST CASE: " + this.getName() + " -> Output: "+values.get(0));
@@ -63,7 +63,7 @@ public class CSVUtilsTest extends TestCase {
 	 */
 	public void test1_GetValueByIndex() {
 		boolean assertActual = false;
-		String value= CSVUtils.getValueByIndex(testFile1, "ID", 2);
+		String value= CsvUtils.getValueByIndex(testFile1, "ID", 2);
 		
 		if (value!=null && !value.equals("")) {
 			System.out.println("TEST CASE: " + this.getName() + " -> Output: "+value);
@@ -77,7 +77,7 @@ public class CSVUtilsTest extends TestCase {
 	 */
 	public void test2_GetValueByIndex() {
 		boolean assertActual = false;
-		String value= CSVUtils.getValueByIndex(testFile2, "type", 0);
+		String value= CsvUtils.getValueByIndex(testFile2, "type", 0);
 		
 		if (value!=null && !value.equals("")) {
 			System.out.println("TEST CASE: " + this.getName() + " -> Output: '"+value+"'");
@@ -92,7 +92,7 @@ public class CSVUtilsTest extends TestCase {
 	public void testGetFirstMatchingValue() {
 		boolean assertActual = false;
 		String pattern = "_wergferge_werwer_w2eq.xlsx";
-		String result = CSVUtils.getFirstMatchingValue(testFile2, "uid", pattern); 
+		String result = CsvUtils.getFirstMatchingValue(testFile2, "uid", pattern); 
 		if (result !=null && result.contains(pattern)){
 			System.out.println("TEST CASE: " + this.getName() + " -> Output: "+result);
 			assertActual = true;
@@ -106,7 +106,7 @@ public class CSVUtilsTest extends TestCase {
 	public void testGetMatchingValues() {
 		boolean assertActual = false;
 		String pattern = "_Crewtrwerwe.jpg";
-		List<String> result = CSVUtils.getMatchingValues(testFile2, "uid", pattern); 
+		List<String> result = CsvUtils.getMatchingValues(testFile2, "uid", pattern); 
 		if (result !=null && result.size()>0){
 			System.out.println("TEST CASE: " + this.getName() + " -> Output: "+result.size()+ " results found! ");
 			assertActual = true;
@@ -120,7 +120,7 @@ public class CSVUtilsTest extends TestCase {
 	public void testCompareAndRetrieveValues() {
 		boolean assertActual = false;
 		
-		List<String> result = CSVUtils.compareAndRetrieveValues(testFile2, "uid", testFile1, "CONTENT_URL"); 
+		List<String> result = CsvUtils.compareAndRetrieveValues(testFile2, "uid", testFile1, "CONTENT_URL"); 
 		if (result.size()==0){
 			System.out.println("TEST CASE: " + this.getName() + " -> Output: "+result.size()+ " results found! ");
 			assertActual = true;
@@ -135,7 +135,7 @@ public class CSVUtilsTest extends TestCase {
 		boolean assertActual = false;
 		String input = testFile3;
 		String output= targetDir + "/sorted.csv";
-		CSVUtils.sortCSVLines(input, output);
+		CsvUtils.sortCSVLines(input, output);
 		java.io.File f = new java.io.File(output);
 		
 		if (f.isFile() && f.length()>0) {
@@ -152,7 +152,7 @@ public class CSVUtilsTest extends TestCase {
 		boolean assertActual = false;
 		String input = testFile3;
 		String output= targetDir + "/unique-lines.csv";
-		CSVUtils.deleteDuplicateLines(input, output);
+		CsvUtils.deleteDuplicateLines(input, output);
 		java.io.File f = new java.io.File(output);
 		
 		if (f.isFile() && f.length()>0) {
@@ -169,7 +169,7 @@ public class CSVUtilsTest extends TestCase {
 		boolean assertActual = false;
 		String input = testFile3;
 		String output= targetDir + "/distinct.csv";
-		CSVUtils.getCSVDistinct(input, output);
+		CsvUtils.getCSVDistinct(input, output);
 		
 		java.io.File f = new java.io.File(output);
 		
