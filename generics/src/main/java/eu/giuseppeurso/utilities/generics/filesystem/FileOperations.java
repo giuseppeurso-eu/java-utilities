@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.IOUtils;
+
 
 
 /**
@@ -170,6 +173,27 @@ public class FileOperations {
 			try {in.close();} catch(Exception ignore) {}
 		}
 		return file.toString();
+	}
+	
+	
+	/**
+	 * Convert file to a Base64 string
+	 * @param file
+	 * @return
+	 */
+	public static String fileToBase64(File file){
+		String encodedContent="";
+		try {
+			InputStream is = new FileInputStream(file);
+			byte[] bytes = IOUtils.toByteArray(is);
+			encodedContent = Base64.encodeBase64String(bytes);
+		} catch (FileNotFoundException e) {
+			System.out.println("File Exception: "+e);
+		} catch (IOException e) {
+			System.out.println("IO Exception: "+e);
+		}
+		
+		return encodedContent;
 	}
 	
 	
