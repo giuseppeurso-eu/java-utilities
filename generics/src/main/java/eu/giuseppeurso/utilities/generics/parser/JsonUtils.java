@@ -217,7 +217,7 @@ public class JsonUtils {
 	 * Count how many elements are in a JSON Array
 	 * @param source
 	 */
-	public static void getSizeJsonArrayFile(String source){
+	public static void printSizeJsonArrayFile(String source){
 		
 		File file = new File(source);
 		

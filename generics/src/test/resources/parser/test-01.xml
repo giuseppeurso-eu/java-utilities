@@ -1,0 +1,34 @@
+<Schools>
+    <School>
+        <ID>335823</ID> 
+        <Name>Fairfax High School</Name> 
+        <Student>
+            <ID>4195653</ID>
+            <Name>Will Turner</Name>
+        </Student>
+        <Student>
+            <ID>4195654</ID>
+            <Name>Bruce Paltrow</Name>
+        </Student>
+        <Student>
+            <ID>4195655</ID>
+            <Name>Santosh Gowswami</Name>
+        </Student>
+    </School>
+    <School>
+        <ID>335824</ID> 
+        <Name>FallsChurch High School</Name> 
+        <Student>
+            <ID>4153</ID>
+            <Name>John Singer</Name>
+        </Student>
+        <Student>
+            <ID>4154</ID>
+            <Name>Shane Warne</Name>
+        </Student>
+        <Student>
+            <ID>4155</ID>
+            <Name>Eddie Diaz</Name>
+        </Student>
+    </School>
+</Schools>
