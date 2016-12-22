@@ -3,8 +3,10 @@ package eu.giuseppeurso.utilities.generics.parser;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.json.JSONObject;
 import org.json.simple.JSONArray;
 
 /**
@@ -132,13 +134,13 @@ public class JsonUtils {
 	}
 	
 	/**
-	 * Get an element of a Json Array from a given index
+	 * Get an element of a Json Array for a given index
 	 * @param source
 	 * @param index
 	 */
-	public static void getElementFromJsonArrayFile(String source, int index){
+	public static void getElementFromJsonArrayFile(String sourceFile, int index){
 		
-		File file = new File(source);
+		File file = new File(sourceFile);
 		byte[] jsonBytes;
 		try {
 			jsonBytes = FileUtils.readFileToByteArray(file);
@@ -161,9 +163,9 @@ public class JsonUtils {
 	 * @param source
 	 * @param key
 	 */
-	public static void getValueFromJsonArrayFile(String source, String key){
+	public static void getValueFromJsonArrayFile(String sourceFile, String key){
 		
-		File file = new File(source);
+		File file = new File(sourceFile);
 		byte[] jsonBytes;
 		try {
 			jsonBytes = FileUtils.readFileToByteArray(file);
@@ -186,9 +188,9 @@ public class JsonUtils {
 	 * @param key
 	 * @param value
 	 */
-	public static void searchValueInJsonArrayFile(String source, String key, String value){
+	public static void searchValueInJsonArrayFile(String sourceFile, String key, String value){
 		
-		File file = new File(source);
+		File file = new File(sourceFile);
 		
 		byte[] jsonBytes;
 		try {
@@ -200,7 +202,6 @@ public class JsonUtils {
 			for (int i = 0; i < jsonA.length(); i++) {
 				org.json.JSONObject jsonObject =jsonA.getJSONObject(i);
 				//System.out.println("Element: "+jsonObject.get(key));
-				
 				if(jsonObject.get(key).toString().equals(value)){
 					System.out.println("Found Value at index: "+i);
 					System.out.println("Element: "+jsonA.get(i));
@@ -217,9 +218,9 @@ public class JsonUtils {
 	 * Count how many elements are in a JSON Array
 	 * @param source
 	 */
-	public static void printSizeJsonArrayFile(String source){
+	public static void printSizeJsonArrayFile(String sourceFile){
 		
-		File file = new File(source);
+		File file = new File(sourceFile);
 		
 		byte[] jsonBytes;
 		try {
@@ -231,6 +232,37 @@ public class JsonUtils {
 			
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Converts string to JSONArray
+	 * @param sourceString
+	 * @return
+	 */
+	public static org.json.JSONArray stringArrayToJsonArray(String sourceString){
+		if (sourceString!=null && !sourceString.equals("") && sourceString.substring(0,1).matches("\\[")) {
+			org.json.JSONArray jArray = new org.json.JSONArray(sourceString);
+			System.out.println(jArray);
+			return jArray;
+		} else {
+			System.out.println("The source String must starts with '['.");
+			return null;
+		}	
+	}
+
+	/**
+	 * Accessing members of items in a JSONArray
+	 * @param sourceJArray
+	 */
+	public static void surfJsonArray(org.json.JSONArray sourceJArray, List<String> keysToPrint){
+		System.out.println("Lenght of source JSON Array: "+sourceJArray.length());
+		for (int i = 0; i < sourceJArray.length(); i++) {
+		    JSONObject jsonobject = sourceJArray.getJSONObject(i);
+		    //System.out.println(jsonobject);
+		    for (String key : keysToPrint) {
+				System.out.println(key+" : "+jsonobject.get(key));
+			}
 		}
 	}
 }
