@@ -1,12 +1,22 @@
 package eu.giuseppeurso.utilities.generics.parser;
 
+import org.mozilla.universalchardet.UniversalDetector;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PushbackInputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -34,6 +44,68 @@ public class XmlUtils {
             ie.printStackTrace();
         }
     }
+    
+    /**
+     * 
+     */
+    public static void stripXmlBOM() {
+		String[] encodings = { "UTF-8", "UTF-16", "ISO-8859-1" };
+		for (String actual : encodings) {
+			for (String declared : encodings) {
+				if (actual != declared) {
+					String xml = "<?xml version='1.0' encoding='" + declared + "'?><x/>";
+					byte[] encoded = xml.getBytes(Charset.forName(actual));
+					try {
+						InputStream stream = new ByteArrayInputStream(encoded);
+						SAXParserFactory.newInstance().newSAXParser().parse(stream, new DefaultHandler());
+						System.out.println("HIDDEN ERROR! actual:" + actual + " " + xml);
+					} catch (Exception e) {
+						System.out.println(e.getMessage() + " actual:" + actual + " xml:" + xml);
+					}
+				}
+			}
+		}
+
+	}
+    
+    
+    public static void detectEncoding(File file) {
+    	byte[] buf = new byte[4096];
+		try {
+			FileInputStream fis = new FileInputStream(file);
+			UniversalDetector detector = new UniversalDetector(null);
+	    	
+	        int nread;
+	        while ((nread = fis.read(buf)) > 0 && !detector.isDone()) detector.handleData(buf, 0, nread);
+	        fis.close();
+	        
+	        detector.dataEnd();
+	        String encoding = detector.getDetectedCharset();
+	        if (encoding!=null) {
+	        	System.out.println("Encoding detected: "+encoding);
+	        }else {
+				System.out.println("Unable to detect Encoding.");
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	
+    }
+    
+    public static InputStream checkForUtf8BOMAndDiscardIfAny(InputStream inputStream) throws IOException {
+        PushbackInputStream pushbackInputStream = new PushbackInputStream(new BufferedInputStream(inputStream), 3);
+        byte[] bom = new byte[3];
+        if (pushbackInputStream.read(bom) != -1) {
+            if (!(bom[0] == (byte) 0xEF && bom[1] == (byte) 0xBB && bom[2] == (byte) 0xBF)) {
+                pushbackInputStream.unread(bom);
+            }
+        }
+        return pushbackInputStream;
+    }
+     
+    
 }
 
 class SchoolsHandler extends DefaultHandler {
