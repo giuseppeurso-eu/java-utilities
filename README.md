@@ -1,11 +1,5 @@
 
-====================================================================
-Java utilities and code snippets
-====================================================================
-**Giuseppe Urso - GITHUB**
-
-Url: https://github.com/giuseppeurso-eu/java-samples 
-====================================================================
+# Java utilities and code snippets
 
 This repository contains the source code which could be referred to:
 
@@ -17,4 +11,4 @@ requires anyone who distributes code or a derivative work to make the
 source available under the same terms. V3 is similar to V2, but further
 restricts use in hardware that forbids software alterations (see LICENSE.txt).
 
-
+---
