@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.Writer;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 
@@ -196,5 +197,19 @@ public class FileOperations {
 		return encodedContent;
 	}
 	
-	
+	/**
+	 * Convert a Base64 encoded source text into a file
+	 * @param base64
+	 * @param destFile
+	 */
+	public static void base64ToFile(String base64, String destFile){
+		
+		byte[] source = Base64.decodeBase64(base64);
+		try {
+			FileUtils.writeByteArrayToFile(new File(destFile), source);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
 }
