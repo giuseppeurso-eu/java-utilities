@@ -218,7 +218,7 @@ public class JsonUtils {
 	 * Count how many elements are in a JSON Array
 	 * @param source
 	 */
-	public static void printSizeJsonArrayFile(String sourceFile){
+	public static void countSizeJsonArrayFile(String sourceFile){
 		
 		File file = new File(sourceFile);
 		
@@ -264,5 +264,26 @@ public class JsonUtils {
 				System.out.println(key+" : "+jsonobject.get(key));
 			}
 		}
+	}
+	
+	/**
+	 * Returns the plain text of a given json file.
+	 * @param sourceFile
+	 * @return
+	 */
+	public static String jsonFileToString(String sourceFile){
+		String jsonText="unparsed";
+		File file = new File(sourceFile);
+		 
+		byte[] jsonBytes;
+		try {
+			System.out.println("File name: "+file.getCanonicalPath());
+			jsonBytes = FileUtils.readFileToByteArray(file);
+			jsonText = new String(jsonBytes, "UTF-8");
+			System.out.println("Json text:\n"+jsonText);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonText;
 	}
 }
