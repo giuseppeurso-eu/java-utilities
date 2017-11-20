@@ -38,7 +38,7 @@ public class MicrosoftSQLServer
         	System.out.println("Password: "+dbpasswd);
         	System.out.println("Trying to connect, please wait...");
             Connection conn = DriverManager.getConnection(db_connect_string, db_userid, db_password);
-            System.out.println("connected");
+            System.out.println("SUCCESFULLY CONNECTED!!!");
         }
         catch (Exception e)
         {
