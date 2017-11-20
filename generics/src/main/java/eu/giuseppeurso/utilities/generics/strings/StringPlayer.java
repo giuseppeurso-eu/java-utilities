@@ -36,9 +36,6 @@ public class StringPlayer {
 	 * @see http://docs.oracle.com/javase/7/docs/api/java/util/UUID.html#randomUUID%28%29
 	 */
 	public static String getRandomUUID() {
-		int length = 10;
-		boolean useLetters = true;
-		boolean useNumbers = false;
 		UUID id = UUID.randomUUID();
 		System.out.println(id);
 		return id.toString();
