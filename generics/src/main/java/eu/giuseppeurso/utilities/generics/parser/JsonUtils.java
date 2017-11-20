@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONValue;
 
 /**
  * Manipulating and parsing JSON files.
@@ -163,7 +165,7 @@ public class JsonUtils {
 	 * @param source
 	 * @param key
 	 */
-	public static void getValueFromJsonArrayFile(String sourceFile, String key){
+	public static void printValueFromJsonArrayFile(String sourceFile, String key){
 		
 		File file = new File(sourceFile);
 		byte[] jsonBytes;
@@ -277,13 +279,72 @@ public class JsonUtils {
 		 
 		byte[] jsonBytes;
 		try {
-			System.out.println("File name: "+file.getCanonicalPath());
+			//System.out.println("File name: "+file.getCanonicalPath());
 			jsonBytes = FileUtils.readFileToByteArray(file);
 			jsonText = new String(jsonBytes, "UTF-8");
-			System.out.println("Json text:\n"+jsonText);
+			//System.out.println("Json text:\n"+jsonText);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return jsonText;
+	}
+	
+	
+	
+	/**
+	 * Returns the JSON Object (org.json) corresponding a given json file.
+	 * @param sourceFile
+	 * @return
+	 */
+	public static org.json.JSONObject jsonFileToJSONObject(String sourceFile){
+		org.json.JSONObject jsonObj = null;
+		//System.out.println("Source file: " + sourceFile);
+		String jsonString = jsonFileToString(sourceFile);
+		jsonObj = stringObjectToJsonObject(jsonString);
+		
+		return jsonObj;
+	}
+	
+	public static JSONObject mapToJsonObject(Map<String,String> map){
+		JSONObject jsonObject=null;
+		if (map!=null) {
+			jsonObject = new JSONObject(map);
+		}
+		System.out.println("Json Object to string: "+jsonObject);
+		return jsonObject;
+		
+	}
+	
+	/**
+	 * Converts string to JSONObject. The given string must be enclosed by {} 
+	 * @param sourceString
+	 * @return
+	 */
+	public static JSONObject stringObjectToJsonObject(String sourceString){
+		if (sourceString!=null && !sourceString.equals("") && sourceString.substring(0,1).matches("\\{")) {
+			org.json.JSONObject jObj = new org.json.JSONObject(sourceString);
+			//System.out.println("Json Object as string: "+jObj);
+			return jObj;
+		} else {
+			System.out.println("The source String must starts with '{'.");
+			return null;
+		}	
+	}
+	
+	/**
+	 * Writes a json object (org.json) to a File.
+	 * @param destFile
+	 * @param json
+	 */
+	public static void jsonObjectToFile(String destFile, JSONObject json){
+		try (FileWriter file = new FileWriter(destFile)) {
+			Object obj = JSONValue.parse(json.toString());
+			org.json.simple.JSONObject jObjSimple = (org.json.simple.JSONObject) obj;
+            file.write(jObjSimple.toJSONString());
+            file.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+		
 	}
 }
