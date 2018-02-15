@@ -1,13 +1,23 @@
 package eu.giuseppeurso.utilities.generics.strings;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.swing.tree.ExpandVetoException;
+
+import org.json.JSONObject;
+
+
 
 
 public class MAINexecutor {
 
-	public static void main(String[] args) throws ExpandVetoException {
+	public static void main(String[] args) throws ExpandVetoException, ParseException {
 //		String input = "openpa:test1;openpa:test2;openpa:test3";
 //			   
 //		String[] splitted = StringPlayer.splitByDelimiter(input, ";");
@@ -31,27 +41,57 @@ public class MAINexecutor {
 //		System.out.println(s);
 //		System.out.println(s.toString().length());
 		
-		class MyClass{
-		    public int num;
-		    public String str;
-			public int getNum() {
-				return num;
-			}
-			public void setNum(int num) {
-				this.num = num;
-			}
-			public String getStr() {
-				return str;
-			}
-			public void setStr(String str) {
-				this.str = str;
-			} 
-		}
+//		class MyClass{
+//		    public int num;
+//		    public String str;
+//			public int getNum() {
+//				return num;
+//			}
+//			public void setNum(int num) {
+//				this.num = num;
+//			}
+//			public String getStr() {
+//				return str;
+//			}
+//			public void setStr(String str) {
+//				this.str = str;
+//			} 
+//		}
+//		
+//		MyClass mc = new MyClass();
+//		mc.setNum(22);
+//		mc.setStr("ciccio");
+//		Map<String, String> mapValues = StringPlayer.getPojoGettersValues(mc);
 		
-		MyClass mc = new MyClass();
-		mc.setNum(22);
-		mc.setStr("ciccio");
-		Map<String, String> mapValues = StringPlayer.getPojoGettersValues(mc);
+		// Progress BAR
+//		List<String> aList = new ArrayList<String>();
+//		aList.add("qweq");
+//		aList.add("qweq");
+//		aList.add("qweq");
+//		aList.add("qweq");
+//		
+//		int counter=0;
+//		for (String string : aList) {
+//			StringPlayer.progressPercentage(counter, aList.size());
+//			try {
+//				Thread.sleep(1000);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//			counter++;
+//		}
+		
+		
+		JSONObject jsonProperties = new JSONObject();
+		jsonProperties.put("date", "18/01/2018");
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/YYYY");
+		
+		String value = jsonProperties.getString("date");
+		System.out.println("Received Json date:'"+value+"'");
+		Date parsedDate = dateFormatter.parse(value);
+		System.out.println("Parsed date: '"+parsedDate+"'");
+		
+		
 		
 		
 		
