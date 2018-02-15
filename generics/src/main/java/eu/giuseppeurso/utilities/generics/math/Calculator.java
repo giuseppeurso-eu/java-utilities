@@ -1,5 +1,8 @@
 package eu.giuseppeurso.utilities.generics.math;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 
@@ -43,4 +46,53 @@ static Boolean twoNumberGreaterThanLimits(int sideA, int sideB, int width, int h
     return !(sideA < width && sideB < height);
 }
 
+/**
+ * Get random integers in a given range.
+ * @param min
+ * @param max
+ * @param totalNumbersToPrint
+ */
+static void printRandomNumbers(int min, int max, int totalNumbersToPrint ){
+	System.out.println("Range of numbers: ["+min+","+max+"]");
+	for (int i = 0; i < totalNumbersToPrint; i++) {
+		Random random = new Random();
+		int randomNum = random.nextInt((max - min) + 1) + min;
+		System.out.println("Random Number: "+ randomNum);
+	}
+}
+
+static int[] getRandomNumbers(int min, int max, int totalNumbersToGet ){
+	int[] numbers = new int[totalNumbersToGet];
+	System.out.println("Range of numbers: ["+min+","+max+"]");
+	for (int i = 0; i < totalNumbersToGet; i++) {
+		Random random = new Random();
+		int randomNum = random.nextInt((max - min) + 1) + min;
+		System.out.println("Generated random Number: "+ randomNum);
+		// For uniqueness, check if the set to be returned contains the number generates each time
+		for (int j = 0; j < numbers.length; j++) {
+			System.out.println(j+") Current array number:"+numbers[j]);
+			if (numbers[j]==randomNum) {
+				System.out.println("Collision avoided for number: "+numbers[j]+"<>"+randomNum);
+				randomNum = random.nextInt((max - min) + 1) + min;
+			}
+		}
+		numbers[i] = randomNum;
+		System.out.println("Saved number: "+numbers[i]);
+		
+	}
+	return numbers;
+}
+
+static List<Integer> getRandomNumberList(int min, int max, int totalToGet){
+	ArrayList<Integer> list = new ArrayList<Integer>();
+    for (int i=min; i<max; i++) {
+        list.add(new Integer(i));
+    }
+    Collections.shuffle(list);
+    ArrayList<Integer> listWithRandomNumbers = new ArrayList<Integer>();
+    for (int i=0; i<totalToGet; i++) {
+    	listWithRandomNumbers.add(list.get(i));
+    }
+    return listWithRandomNumbers;
+}
 }
