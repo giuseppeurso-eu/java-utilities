@@ -1,13 +1,16 @@
 package eu.giuseppeurso.utilities.generics.parser;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONValue;
 
@@ -346,5 +349,27 @@ public class JsonUtils {
             e.printStackTrace();
         }
 		
+	}
+	
+	/**
+	 * Returns a org.json.JSONObject from a given FileReader
+	 * @param jsonFile
+	 * @return
+	 */
+	public static JSONObject fileReaderToJsonObject(FileReader jsonFile){
+		JSONTokener tokener = new JSONTokener(jsonFile);
+		JSONObject obj = new JSONObject(tokener);
+		return obj;
+	}
+	
+	/**
+	 * Returns a org.json.JSONObject from a given InputStream
+	 * @param is
+	 * @return
+	 */
+	public static JSONObject inputStreamToJsonObject(InputStream is){
+		JSONTokener tokener = new JSONTokener(is);
+		JSONObject obj = new JSONObject(tokener);
+		return obj;
 	}
 }
