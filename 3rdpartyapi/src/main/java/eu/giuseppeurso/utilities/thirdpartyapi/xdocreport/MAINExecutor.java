@@ -28,7 +28,7 @@ public class MAINExecutor {
 	
 		CustomerPojo customer = new CustomerPojo("Lemmy", "Kilmister", "motorhead@metal.net", "666666", addrList);
 		
-		File templateOdt = new File("src/main/resources/customer-template.ftl.odt");
+		File templateOdt = new File("src/main/resources/xdocreport/customer-template.ftl.odt");
 		File generatedPdf  = new File("target/generated-report.pdf");
 		
 		try {
