@@ -19,13 +19,17 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.AuthenticationException;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
@@ -285,4 +289,21 @@ public class HttpStuff {
 		}
 
 
+	/**
+	 * Returns Basic Authenticated CloseableHttpClient (Apache Http) via CredentialsProvider.
+	 * @return
+	 */
+	public static CloseableHttpClient createBasicAuthenticatedClient(String user, String password) {
+		CloseableHttpClient authenticatedClient = null;
+		try {
+			CredentialsProvider provider = new BasicCredentialsProvider();
+			UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(user, password);
+			provider.setCredentials(AuthScope.ANY, credentials);
+			authenticatedClient = HttpClientBuilder.create().setDefaultCredentialsProvider(provider).build();
+		}catch (Exception e) {
+			System.out.println("Error while trying to create authenticated HttpClient by using ApacheHttp: "+e);
+			e.printStackTrace();
+		}
+		return authenticatedClient;		
+	}
 }
