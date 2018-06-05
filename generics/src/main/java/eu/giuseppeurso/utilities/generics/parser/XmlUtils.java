@@ -48,22 +48,26 @@ public class XmlUtils {
     /**
      * 
      */
-    public static void stripXmlBOM() {
+    public static void stripXmlBOM(String xmlToCheck, String encodingToCheck) {
 		String[] encodings = { "UTF-8", "UTF-16", "ISO-8859-1" };
 		for (String actual : encodings) {
-			for (String declared : encodings) {
-				if (actual != declared) {
-					String xml = "<?xml version='1.0' encoding='" + declared + "'?><x/>";
-					byte[] encoded = xml.getBytes(Charset.forName(actual));
+			System.out.println("Checking source with encoding '"+actual+"'...");
+//			for (String declared : encodings) {
+				if (actual != encodingToCheck) {
+//					String xml = "<?xml version='1.0' encoding='" + declaredEncoding + "'?><x/>";
+					byte[] encoded = xmlToCheck.getBytes(Charset.forName(actual));
 					try {
 						InputStream stream = new ByteArrayInputStream(encoded);
 						SAXParserFactory.newInstance().newSAXParser().parse(stream, new DefaultHandler());
-						System.out.println("HIDDEN ERROR! actual:" + actual + " " + xml);
+						System.out.println("BOM HIDDEN ERROR! Actual encoding is '" + actual + "' Desired encoding is '"+encodingToCheck+"'. Source xml is: " + xmlToCheck);
 					} catch (Exception e) {
-						System.out.println(e.getMessage() + " actual:" + actual + " xml:" + xml);
+						System.out.println(e.getMessage() + " Error detected with encoding '" + actual + "'. Source xml: " + xmlToCheck);
 					}
+				}else {
+					System.out.println("Source encoding OK '"+encodingToCheck+"'");
 				}
-			}
+				
+//			}
 		}
 
 	}

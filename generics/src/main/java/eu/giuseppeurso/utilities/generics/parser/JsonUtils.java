@@ -1,13 +1,18 @@
 package eu.giuseppeurso.utilities.generics.parser;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -51,23 +56,29 @@ public class JsonUtils {
 	 * Split JSON Array file. Example Source: [ {"key1":"value1","key2":"value2"},
 	 * {"key1":"value3","key2":"value4"} ]
 	 */
-	public static void splitJsonArrayFile(String sourceFile, String destFile,
-			int startIndex, int endIndex) {
+	public static void splitJsonArrayFile(String sourceFile, String destDirectory, int maxElementsPerFile) {
 
 		File file = new File(sourceFile);
+		String fileName = file.getName();
+		
+		if (fileName.indexOf(".")>0) {
+			System.out.println("Found extension in the file name: "+fileName);
+			fileName = file.getName().substring(0,file.getName().lastIndexOf("."));
+		}
+		
 		byte[] jsonBytes;
 		try {
 			jsonBytes = FileUtils.readFileToByteArray(file);
 			String jsonText = new String(jsonBytes, "UTF-8");
 			org.json.JSONArray jsonA = new org.json.JSONArray(jsonText);
-			System.out.println("Source JSON Total Elements:" + jsonA.length()
+			System.out.println("Source JSON Total Elements: " + jsonA.length()
 					+ "\n");
-			int parts = jsonA.length() / endIndex;
+			int parts = jsonA.length() / maxElementsPerFile;
 
-			if (jsonA.length() % endIndex == 0) {
-				System.out.println("Numbers of part files: " + parts);
+			if (jsonA.length() % maxElementsPerFile == 0) {
+				System.out.println("Calculated parts (files): " + parts);
 			} else {
-				System.out.println("Numbers of part files: " + (parts + 1));
+				System.out.println("Calculated parts (files): " + (parts + 1));
 			}
 
 			// System.out.println("Numbers of part files: "+parts);
@@ -75,62 +86,54 @@ public class JsonUtils {
 			int lastChunkIndex = 0;
 			String currentF;
 			for (int j = 0; j < parts; j++) {
-				currentF = destFile + "-part" + j+".json";
+				currentF = destDirectory +"/"+ fileName+"-part" + j+".json";
 
+				jsonPart = new JSONArray();
 				if (j == 0) {
-					jsonPart = new JSONArray();
+					
 
-					for (int i = startIndex; i < endIndex; i++) {
+					for (int i = 0; i < maxElementsPerFile; i++) {
 						// System.out.println("Source Json element: "+jsonA.get(i));
 						jsonPart.add(jsonA.get(i));
 						// System.out.println("Dest JSON element:"+jsonPart.get(i)+"\n");
 					}
-					lastChunkIndex = endIndex;
+					lastChunkIndex = maxElementsPerFile;
 					FileWriter dest = new FileWriter(currentF);
 					dest.write(jsonPart.toJSONString());
 					dest.flush();
 					dest.close();
-					System.out.println("Current Part: " + currentF);
-					System.out
-							.println("Dest Total Elements:" + jsonPart.size());
+					
+					
 				} else {
-
-					jsonPart = new JSONArray();
-					for (int s = (endIndex * j); s < endIndex + (endIndex * j); s++) {
+					for (int s = (maxElementsPerFile * j); s < maxElementsPerFile + (maxElementsPerFile * j); s++) {
 						// System.out.println("Source Json element: "+jsonA.get(i));
 						jsonPart.add(jsonA.get(s));
 						// System.out.println("Dest JSON element:"+jsonPart.get(i)+"\n");
-
 					}
 
-					lastChunkIndex = endIndex + (endIndex * j);
+					lastChunkIndex = maxElementsPerFile + (maxElementsPerFile * j);
 					FileWriter dest = new FileWriter(currentF);
 					dest.write(jsonPart.toJSONString());
 					dest.flush();
 					dest.close();
-					System.out.println("Current Part: " + currentF);
-					System.out
-							.println("Dest Total Elements:" + jsonPart.size());
 				}
-
+				System.out.println("Part #"+ j + " : "+ currentF+" [elements="+jsonPart.size()+"]");
 			}
 
 			// The last part
 			if (lastChunkIndex < jsonA.length()) {
-				System.out.println("Last index: " + lastChunkIndex);
 				jsonPart = new JSONArray();
 				for (int s = lastChunkIndex; s < jsonA.length(); s++) {
 					// System.out.println("Source Json element: "+jsonA.get(i));
 					jsonPart.add(jsonA.get(s));
 					// System.out.println("Dest JSON element:"+jsonPart.get(i)+"\n");
 				}
-				currentF = destFile + "-part" + parts+".json"; 
+				currentF = destDirectory +"/"+ fileName+"-part" + parts+".json"; 
 				FileWriter dest = new FileWriter(currentF);
 				dest.write(jsonPart.toJSONString());
 				dest.flush();
 				dest.close();
-				System.out.println("Last Part: " + currentF);
-				System.out.println("Dest Total Elements:" + jsonPart.size());
+				System.out.println("Part #"+ parts + " : "+ currentF+" [elements="+jsonPart.size()+"]");				
 			}
 
 		} catch (IOException e) {
@@ -179,7 +182,7 @@ public class JsonUtils {
 			System.out.println("Array size: "+jsonA.length());
 			for (int i = 0; i < jsonA.length(); i++) {
 				org.json.JSONObject jsonObject =jsonA.getJSONObject(i);
-				System.out.println("Current Value: "+jsonObject.get(key));
+				System.out.println("Current Value of key '"+key+"' : "+jsonObject.get(key));
 			}
 
 		} catch (IOException e) {
@@ -372,4 +375,8 @@ public class JsonUtils {
 		JSONObject obj = new JSONObject(tokener);
 		return obj;
 	}
+	
+	
+	
+
 }
